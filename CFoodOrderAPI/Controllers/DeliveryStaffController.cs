@@ -44,7 +44,7 @@ namespace CFoodOrder.Controllers
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
 
-            cmd.CommandText = "InsUpdDeliveryStaff";
+            cmd.CommandText = "InsUpdDelDeliveryStaff";
             cmd.CommandType = CommandType.StoredProcedure;
 
             SqlParameter id = new SqlParameter("@Id", SqlDbType.Int);
@@ -111,9 +111,13 @@ namespace CFoodOrder.Controllers
             Altemail.Value = rc.Altemail;
             cmd.Parameters.Add(Altemail);
 
-            SqlParameter accountno = new SqlParameter("@accountno", SqlDbType.VarChar,50);
-            accountno.Value = rc.AccountNo;
-            cmd.Parameters.Add(accountno);
+            //SqlParameter UserAccountNo = new SqlParameter("@uno", SqlDbType.VarChar, 50);
+            //UserAccountNo.Value = rc.UserAccountNo;
+            //cmd.Parameters.Add(UserAccountNo);
+
+            SqlParameter AccountNo = new SqlParameter("@accountno", SqlDbType.VarChar, 50);
+            AccountNo.Value = rc.AccountNo;
+            cmd.Parameters.Add(AccountNo);
 
             SqlParameter UserPhoto = new SqlParameter("@UserPhoto", SqlDbType.VarChar,-1);
             UserPhoto.Value = rc.UserPhoto;

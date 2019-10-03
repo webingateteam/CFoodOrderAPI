@@ -45,6 +45,45 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
+
+        [HttpGet]
+        [Route("api/masterdatatypes/GetDataTypesByGroupId")]
+        public DataTable GetDataTypesByGroupId(int grpid)
+        {
+
+            DataTable dt = new DataTable();
+            SqlConnection con = new SqlConnection();
+
+            try
+            {
+
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetTypesByGroupId";
+
+                SqlParameter id = new SqlParameter("@gid", SqlDbType.Int);
+                id.Value = grpid;
+                cmd.Parameters.Add(id);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+            return dt;
+        }
+
         [HttpPost]
         [Route("api/masterdatatypes/InSUpDMasterDataTypes")]
         public DataTable InSUpDMasterDataTypes(MasterDatatypes m1)
@@ -83,11 +122,11 @@ namespace CFoodOrder.Controllers
             cmd.Parameters.Add(t);
 
             SqlParameter l = new SqlParameter("@listkey", SqlDbType.VarChar, 10);
-            l.Value = m1.Description;
+            l.Value = m1.listkey;
             cmd.Parameters.Add(l);
 
             SqlParameter lv = new SqlParameter("@listvalue", SqlDbType.VarChar, 20);
-            lv.Value = m1.Description;
+            lv.Value = m1.listvalue;
             cmd.Parameters.Add(lv);
 
             SqlParameter fa = new SqlParameter("@flag", SqlDbType.VarChar, 10);

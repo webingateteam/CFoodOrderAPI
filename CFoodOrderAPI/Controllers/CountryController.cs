@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Tracing;
 
 namespace CFoodOrder.Controllers
 {
@@ -87,6 +88,64 @@ namespace CFoodOrder.Controllers
 
 
 
+        }
+
+        [HttpPost]
+        [Route("api/Country/InsUpdCountries")]
+        public HttpResponseMessage SaveCountries(IEnumerable<country> countries)
+        {
+
+            //LogTraceWriter traceWriter = new LogTraceWriter();
+            //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "SaveCountries ....");
+            SqlConnection conn = new SqlConnection();
+            try
+            {
+                //connect to database
+
+                //connetionString="Data Source=ServerName;Initial Catalog=DatabaseName;User ID=UserName;Password=Password"
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "InsUpdCountries";
+                cmd.Connection = conn;
+                conn.Open();
+
+                foreach (country c in countries)
+                {
+
+                    SqlParameter rid = new SqlParameter();
+                    rid.ParameterName = "@Id";
+                    rid.SqlDbType = SqlDbType.Int;
+                    rid.Value = c.Id;
+                    cmd.Parameters.Add(rid);
+
+                    SqlParameter cmpid = new SqlParameter();
+                    cmpid.ParameterName = "@HasOperations";
+                    cmpid.SqlDbType = SqlDbType.Int;
+                    cmpid.Value = c.HasOperations;
+                    cmd.Parameters.Add(cmpid);
+
+
+                    cmd.ExecuteScalar();
+
+                    cmd.Parameters.Clear();
+                }
+
+                conn.Close();
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "SaveCountries completed.");
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                if (conn != null && conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+                string str = ex.Message;
+               // traceWriter.Trace(Request, "1", TraceLevel.Info, "{0}", "Error in SaveCountries:" + ex.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex);
+            }
         }
         [HttpGet]
         [Route("api/Country/GetZipCodes")]

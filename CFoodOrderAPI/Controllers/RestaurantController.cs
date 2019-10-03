@@ -87,69 +87,71 @@ namespace CFoodOrder.Controllers
 
             cmd.CommandText = "InsUpdDelRestaurantMaster";
             cmd.CommandType = CommandType.StoredProcedure;
-          
 
-            SqlParameter n = new SqlParameter("@name", SqlDbType.VarChar, 250);
-            n.Value = rm.Name;
-            cmd.Parameters.Add(n);
 
-            SqlParameter e = new SqlParameter("@email", SqlDbType.VarChar,250);
-            e.Value = rm.Emailid;
-            cmd.Parameters.Add(e);
+            SqlParameter name = new SqlParameter("@name", SqlDbType.VarChar, 50);
+            name.Value = rm.Name;
+            cmd.Parameters.Add(name);
 
-            SqlParameter sd = new SqlParameter("@shortdesc", SqlDbType.VarChar,250);
-            sd.Value = rm.ShortDesc;
-            cmd.Parameters.Add(sd);
+            SqlParameter email = new SqlParameter("@email", SqlDbType.VarChar,50);
+            email.Value = rm.Emailid;
+            cmd.Parameters.Add(email);
 
-            SqlParameter ii = new SqlParameter("@image", SqlDbType.VarChar,-1);
-            ii.Value = rm.Image;
-            cmd.Parameters.Add(ii);
+            SqlParameter shortdesc = new SqlParameter("@shortdesc", SqlDbType.VarChar,250);
+            shortdesc.Value = rm.ShortDesc;
+            cmd.Parameters.Add(shortdesc);
 
-            SqlParameter si = new SqlParameter("@shortimg", SqlDbType.VarChar, -1);
-            si.Value = rm.ShortImage;
-            cmd.Parameters.Add(si);
+            SqlParameter image = new SqlParameter("@image", SqlDbType.Image);
+            name.Value = rm.Image;
+            cmd.Parameters.Add(image);
 
-            SqlParameter w = new SqlParameter("@website", SqlDbType.VarChar, 50);
-            w.Value = rm.website;
-            cmd.Parameters.Add(w);
+            SqlParameter shortimg = new SqlParameter("@shortimg", SqlDbType.Image);
+            shortimg.Value = rm.ShortImage;
+            cmd.Parameters.Add(shortimg);
 
-            SqlParameter pn = new SqlParameter("@primaryno", SqlDbType.VarChar, 50);
-            pn.Value = rm.PrimaryContactNo;
-            cmd.Parameters.Add(pn);
+            SqlParameter website = new SqlParameter("@website", SqlDbType.VarChar, 50);
+            website.Value = rm.website;
+            cmd.Parameters.Add(website);
 
-            SqlParameter pe = new SqlParameter("@primaryemail", SqlDbType.VarChar, 50);
-            pe.Value = rm.PrimaryContactEmail;
-            cmd.Parameters.Add(pe);
+            SqlParameter primaryno = new SqlParameter("@primaryno", SqlDbType.VarChar, 50);
+            primaryno.Value = rm.PrimaryContactNo;
+            cmd.Parameters.Add(primaryno);
 
-            SqlParameter c = new SqlParameter("@cityid", SqlDbType.Int);
-            c.Value = rm.CityId;
-            cmd.Parameters.Add(c);
+            SqlParameter primaryemail = new SqlParameter("@primaryemail", SqlDbType.VarChar, 50);
+            primaryemail.Value = rm.PrimaryContactEmail;
+            cmd.Parameters.Add(primaryemail);
 
-            SqlParameter z = new SqlParameter("@zipcode", SqlDbType.Int);
-            z.Value = rm.ZipCode;
-            cmd.Parameters.Add(z);
+            SqlParameter cityid = new SqlParameter("@cityid", SqlDbType.Int);
+            cityid.Value = rm.CityId;
+            cmd.Parameters.Add(cityid);
 
-            SqlParameter s = new SqlParameter("@stateid", SqlDbType.Int);
-            s.Value = rm.StateId;
-            cmd.Parameters.Add(s);
+            SqlParameter zipcode = new SqlParameter("@zipcode", SqlDbType.Int);
+            zipcode.Value = rm.ZipCode;
+            cmd.Parameters.Add(zipcode);
 
-            SqlParameter ct = new SqlParameter("@ctryid", SqlDbType.Int);
-            ct.Value = rm.CountryId;
-            cmd.Parameters.Add(ct);
+            SqlParameter stateid = new SqlParameter("@stateid", SqlDbType.Int);
+            stateid.Value = rm.StateId;
+            cmd.Parameters.Add(stateid);
 
-            SqlParameter ff = new SqlParameter("@flag", SqlDbType.VarChar, 250);
-            ff.Value = rm.flag;
-            cmd.Parameters.Add(ff);
+            SqlParameter ctryid = new SqlParameter("@ctryid", SqlDbType.Int);
+            ctryid.Value = rm.CountryId;
+            cmd.Parameters.Add(ctryid);
 
-            SqlParameter Id1 = new SqlParameter("@Id", SqlDbType.Int);
-            Id1.Value = rm.Id;
-            cmd.Parameters.Add(Id1);
+            SqlParameter flag = new SqlParameter("@flag", SqlDbType.VarChar, 250);
+            flag.Value = rm.flag;
+            cmd.Parameters.Add(flag);
+
+            SqlParameter Id = new SqlParameter("@Id", SqlDbType.Int);
+            Id.Value = rm.Id;
+            cmd.Parameters.Add(Id);
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
 
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/Restaurant/InsUpdRestaurantCusines")]
             public DataTable InsUpdRestaurantCusines(RestaurantCusines rc)
@@ -197,6 +199,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/Restaurant/GetRestaurantList")]
         public DataTable GetRestaurantList()
@@ -217,6 +221,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/Restaurant/InsUpdRestaurantDocs")]
         public DataTable InsUpdRestaurantDocs(dummy rc)
@@ -258,7 +264,7 @@ namespace CFoodOrder.Controllers
             return dt;
         }
 
-
+       
         [HttpGet]
         [Route("api/Restaurant/GetRestaurantDashboard")]
         public DataTable GetRestaurantDashboard(dummy rc)
@@ -287,6 +293,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/Restaurant/GetResOrdersHistory")]
         public DataTable GetResOrdersHistory(dummy rc)
@@ -327,6 +335,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/Restaurant/GetResPendingOrder")]
         public DataTable GetResPendingOrder(dummy rc)
@@ -367,6 +377,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/Restaurant/GetRestaurantOrders")]
         public DataTable GetRestaurantOrders(dummy rc)
@@ -407,6 +419,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/Restaurant/ResOnlineOffine")]
         public DataTable ResOnlineOffine(dummy rc)
