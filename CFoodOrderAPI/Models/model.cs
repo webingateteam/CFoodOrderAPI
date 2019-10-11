@@ -11,7 +11,23 @@ namespace CFoodOrder.Models
     using System.Web;
 
     namespace CFood.Models
-    {
+    {    
+
+        public class MenuItems
+        {
+    
+            public int Id { get; set; }
+            public string MenuItemName { get; set; }
+            public string description { get; set; }
+            public Decimal price { get; set; }
+            public Decimal rating { get; set; }
+            public string recipe { get; set; }
+            public string Photo { get; set; }
+            public int MenuCategoryId { get; set; }
+            public int RestaurantId { get; set; }
+            public int RestaurantBranchId { get; set; }
+            public string flag { get; set; }
+        }
         public class AlertConfigurations
         {
             public int Id { get; set; }
@@ -984,6 +1000,7 @@ namespace CFoodOrder.Models
             public string Description { get; set; }
             public string Active { get; set; }
             public string CusinieTypeId { get; set; }
+            public string flag { get; set; }
         }
         public class NotificationConfiguration
         {
