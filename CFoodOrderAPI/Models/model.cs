@@ -27,7 +27,16 @@ namespace CFoodOrder.Models
             public int RestaurantId { get; set; }
             public int RestaurantBranchId { get; set; }
             public string flag { get; set; }
-        }
+
+            public int customerid { get; set; }
+            public int RestBranchId { get; set; }
+            public int totalQuantity { get; set; }
+            public int ItemId { get; set; }
+            public int Quantity { get; set; }
+            public Decimal totalamount { get; set; }
+            public Decimal ItemPrice { get; set; }
+     }
+
         public class AlertConfigurations
         {
             public int Id { get; set; }
