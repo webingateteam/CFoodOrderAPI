@@ -93,19 +93,19 @@ namespace CFoodOrder.Controllers
             name.Value = rm.Name;
             cmd.Parameters.Add(name);
 
-            SqlParameter email = new SqlParameter("@email", SqlDbType.VarChar,50);
+            SqlParameter email = new SqlParameter("@email", SqlDbType.VarChar, 50);
             email.Value = rm.Emailid;
             cmd.Parameters.Add(email);
 
-            SqlParameter shortdesc = new SqlParameter("@shortdesc", SqlDbType.VarChar,250);
+            SqlParameter shortdesc = new SqlParameter("@shortdesc", SqlDbType.VarChar, 250);
             shortdesc.Value = rm.ShortDesc;
             cmd.Parameters.Add(shortdesc);
 
-            SqlParameter image = new SqlParameter("@image", SqlDbType.Image);
-            name.Value = rm.Image;
+            SqlParameter image = new SqlParameter("@image", SqlDbType.VarChar, -1);
+            image.Value = rm.Image;
             cmd.Parameters.Add(image);
 
-            SqlParameter shortimg = new SqlParameter("@shortimg", SqlDbType.Image);
+            SqlParameter shortimg = new SqlParameter("@shortimg", SqlDbType.VarChar, -1);
             shortimg.Value = rm.ShortImage;
             cmd.Parameters.Add(shortimg);
 
@@ -150,7 +150,6 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
-
 
         [HttpPost]
         [Route("api/Restaurant/InsUpdRestaurantCusines")]
@@ -215,6 +214,30 @@ namespace CFoodOrder.Controllers
 
             cmd.CommandText = "GetRestaurantMaster";
             cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+
+            return dt;
+        }
+
+
+        [HttpGet]
+        [Route("api/Restaurant/GetRestaurantListById")]
+        public DataTable GetRestaurantListById(int Id)
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con;
+
+            cmd.CommandText = "GetRestaurantListById";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int)).SqlValue = Id;
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
