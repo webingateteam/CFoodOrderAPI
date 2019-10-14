@@ -996,10 +996,13 @@ namespace CFoodOrder.Models
         public class menuCategories
         {
             public int Id { get; set; }
+            public int ResId { get; set; }
+            public int ResBId { get; set; }
+            public int MenuCategoryId { get; set; }
             public string MenuCategoryName { get; set; }
             public string Description { get; set; }
             public string Active { get; set; }
-            public string CusinieTypeId { get; set; }
+            public int CusinieTypeId { get; set; }
             public string flag { get; set; }
         }
         public class NotificationConfiguration
