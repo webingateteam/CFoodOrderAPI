@@ -484,5 +484,64 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
+        [HttpPost]
+        [Route("api/Restaurant/InsUpdResMenuCategories")]
+        public DataTable InsUpdResMenuCategories(menuCategories rc)
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = con;
+
+            cmd.CommandText = "InsUpdDelResMenuCategories";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+
+            SqlParameter Id = new SqlParameter("@id", SqlDbType.Int);
+            Id.Value = rc.Id;
+            cmd.Parameters.Add(Id);
+
+            SqlParameter resid = new SqlParameter("@ResId", SqlDbType.Int);
+            resid.Value = rc.ResId;
+            cmd.Parameters.Add(resid);
+
+            SqlParameter Resbid = new SqlParameter("@ResBranchId", SqlDbType.Int);
+            Resbid.Value = rc.ResBId;
+            cmd.Parameters.Add(Resbid);
+
+            SqlParameter MenuCategoryId = new SqlParameter("@MenuCategoryId", SqlDbType.Int);
+            MenuCategoryId.Value = rc.MenuCategoryId;
+            cmd.Parameters.Add(MenuCategoryId);
+
+            SqlParameter par1 = new SqlParameter("@MenuCategoryName", SqlDbType.VarChar, 250);
+            par1.Value = rc.MenuCategoryName;
+            cmd.Parameters.Add(par1);
+
+            SqlParameter par2 = new SqlParameter("@description", SqlDbType.VarChar, 250);
+            par2.Value = rc.Description;
+            cmd.Parameters.Add(par2);
+
+            SqlParameter par3 = new SqlParameter("@cuisinetype", SqlDbType.Int);
+            par3.Value = rc.CusinieTypeId;
+            cmd.Parameters.Add(par3);
+
+            SqlParameter par4 = new SqlParameter("@Active", SqlDbType.Int);
+            par4.Value = rc.Active;
+            cmd.Parameters.Add(par4);
+
+            SqlParameter par5 = new SqlParameter("@flag", SqlDbType.VarChar);
+            par5.Value = rc.flag;
+            cmd.Parameters.Add(par5);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+
+            return dt;
+        }
     }
 }
