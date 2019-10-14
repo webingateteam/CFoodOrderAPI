@@ -1,5 +1,5 @@
 ﻿using CFoodOrder.Models;
-using CFoodOrder.Models.CFood.Models;
+using CFoodOrder.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -1,4 +1,4 @@
-﻿using CFoodOrder.Models.CFood.Models;
+﻿using CFoodOrder.Models;
 using CFoodOrderAPI;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Http;
-using static CFoodOrder.Models.CFood.Models.roledetails;
+
 
 namespace CFoodOrder.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using CFoodOrder.Models.CFood.Models;
+﻿using CFoodOrder.Models;
 using CFoodOrderAPI;
 using System;
 using System.Collections.Generic;

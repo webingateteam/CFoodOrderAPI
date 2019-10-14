@@ -115,6 +115,7 @@
     <Compile Include="Controllers\restaurantorderController.cs" />
     <Compile Include="Controllers\RoleDetailsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TransactionMasterController.cs" />
     <Compile Include="Controllers\troubleticketsController.cs" />
     <Compile Include="Controllers\userrolesController.cs" />
     <Compile Include="Global.asax.cs">
