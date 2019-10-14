@@ -353,6 +353,7 @@ namespace CFoodOrder.Models
                 public string Description { get; set; }
                 public string Active { get; set; }
                 public string CusinieTypeId { get; set; }
+
             }
             public class NotificationConfiguration
             {

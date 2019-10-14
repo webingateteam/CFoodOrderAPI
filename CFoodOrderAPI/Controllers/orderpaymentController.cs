@@ -16,7 +16,7 @@ namespace CFoodOrder.Controllers
 
         [HttpPost]
         [Route("api/orderpayment/OrderItemslist")]
-        public DataTable saveGamePricing(List<MenuItems> A)
+        public DataTable OrderItemslist(List<MenuItems> A)
         {
             //int orderid = 0;
             //int count = 0;
