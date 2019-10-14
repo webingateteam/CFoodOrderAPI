@@ -35,7 +35,18 @@ namespace CFoodOrder.Models
             public int Quantity { get; set; }
             public Decimal totalamount { get; set; }
             public Decimal ItemPrice { get; set; }
+            List<OrderItemslist> orderItemslist { get; set; }
+
      }
+
+        public class OrderItemslist {
+            public int ItemId { get; set; }
+            public int Quantity { get; set; }
+            public string flag { get; set; }
+            public Decimal ItemPrice { get; set; }
+            public int orderid { get; set; }
+   
+        }
 
         public class AlertConfigurations
         {
