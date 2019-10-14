@@ -1,6 +1,7 @@
 ﻿using CFoodOrder.Models.CFood.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,6 +13,77 @@ namespace CFoodOrder.Controllers
 {
     public class orderpaymentController : ApiController
     {
+
+        [HttpPost]
+        [Route("api/orderpayment/OrderItemslist")]
+        public DataTable saveGamePricing(List<MenuItems> A)
+        {
+            DataTable dt = new DataTable();
+            SqlConnection con = new SqlConnection();
+            try
+            {
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "InsUpdDelOrder";
+                con.Open();
+              
+
+                if (A.Count != 0) { 
+
+                    cmd.Parameters.Add(new SqlParameter("@RestId", SqlDbType.Int)).SqlValue =A[0].RestaurantId;
+                    cmd.Parameters.Add(new SqlParameter("@customerid", SqlDbType.Int)).SqlValue = A[0].customerid;
+                    cmd.Parameters.Add(new SqlParameter("@RestBranchId", SqlDbType.Int)).SqlValue = A[0].RestBranchId;
+                    cmd.Parameters.Add(new SqlParameter("@totalQuantity", SqlDbType.Int)).SqlValue = A[0].totalQuantity;
+                    cmd.Parameters.Add(new SqlParameter("@totalamount", SqlDbType.Decimal)).SqlValue = A[0].totalamount;
+                    cmd.Parameters.Add(new SqlParameter("@flag", SqlDbType.VarChar)).SqlValue = A[0].flag;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
+
+                    cmd.Parameters.Clear();
+
+                    int orderid =(int) dt.Rows[0]["Id"];
+
+                    foreach (MenuItems m in A)
+                    {
+                        try
+                        {
+                      
+                            cmd.CommandType = CommandType.StoredProcedure;
+                            cmd.CommandText = "InsUpdDelOrderDetails";
+                            cmd.Parameters.Add(new SqlParameter("@orderid", SqlDbType.Int)).SqlValue = orderid;
+                            cmd.Parameters.Add(new SqlParameter("@ItemId", SqlDbType.Int)).SqlValue = m.ItemId;
+                            cmd.Parameters.Add(new SqlParameter("@ItemPrice", SqlDbType.Decimal)).SqlValue = m.ItemPrice;
+                            cmd.Parameters.Add(new SqlParameter("@Quantity", SqlDbType.Int)).SqlValue = m.Quantity;
+                            cmd.Parameters.Add(new SqlParameter("@flag", SqlDbType.VarChar)).SqlValue = m.flag;
+                            cmd.ExecuteScalar();
+                            cmd.Parameters.Clear();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+
+            return dt;
+            
+        }
+
+
+
         [HttpGet]
         [Route("api/orderpayment/GetOrderPaymentDetails")]
 
