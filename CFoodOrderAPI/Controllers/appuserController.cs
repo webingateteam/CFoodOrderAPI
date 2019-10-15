@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Text;
 using System.Web.Http;
 
 namespace CFoodOrder.Controllers
@@ -633,6 +634,67 @@ namespace CFoodOrder.Controllers
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
 
+            return dt;
+        }
+
+
+        [HttpPost]
+        [Route("api/appuser/CustomerRating")]
+        public DataTable CustomerRating(CustomerRating vb)
+        {
+            DataTable dt = new DataTable();
+            DataSet ds = new DataSet();
+            //LogTraceWriter traceWriter = new LogTraceWriter();
+            SqlConnection conn = new SqlConnection();
+            StringBuilder str = new StringBuilder();
+            try
+            {
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "CustomerRating....");
+                str.Append("Mobilenumber:" + vb.Mobilenumber + ",");
+                str.Append("orderid:" + vb.orderid + ",");
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "Input sent...." + str.ToString());
+
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "CustomerRating";
+
+
+                cmd.Parameters.Add("@Mobilenumber", SqlDbType.VarChar, 20).Value = vb.Mobilenumber;
+                cmd.Parameters.Add("@orderid", SqlDbType.Int).Value = vb.orderid;
+                cmd.Parameters.Add("@Rating", SqlDbType.Decimal).Value = vb.Rating;
+                cmd.Parameters.Add("@Comments", SqlDbType.VarChar, 500).Value = vb.Comments;
+
+                cmd.Connection = conn;
+
+                SqlDataAdapter db = new SqlDataAdapter(cmd);
+                db.Fill(ds);
+                dt = ds.Tables[0];
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "CustomerRating successful....");
+
+            }
+            catch (Exception ex)
+            {
+                //traceWriter.Trace(Request, "0", TraceLevel.Error, "{0}", "CustomerRating...." + ex.Message.ToString());
+                //throw ex;
+                //throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+                SqlConnection.ClearPool(conn);
+            }
             return dt;
         }
 

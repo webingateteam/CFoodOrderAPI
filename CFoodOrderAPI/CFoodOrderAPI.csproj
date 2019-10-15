@@ -100,10 +100,12 @@
     <Compile Include="Controllers\CustomerPaymentController.cs" />
     <Compile Include="Controllers\customerratingsController.cs" />
     <Compile Include="Controllers\DeliveryStaffController.cs" />
+    <Compile Include="Controllers\DeliveryStaffLoginController.cs" />
     <Compile Include="Controllers\DeliveryStaffOrderController.cs" />
     <Compile Include="Controllers\EditHistoryController.cs" />
     <Compile Include="Controllers\ewalletController.cs" />
     <Compile Include="Controllers\FaqsController.cs" />
+    <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MasterDataGroupsController.cs" />
     <Compile Include="Controllers\masterdatatypesController.cs" />
     <Compile Include="Controllers\MenuController.cs" />

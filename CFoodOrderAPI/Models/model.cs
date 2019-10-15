@@ -1342,5 +1342,54 @@ namespace CFoodOrder.Models
             public string DOB { get; set; }
             public string flag { get; set; }
         }
-    
+
+    public class dstafflogin
+    {
+        public string flag { get; set; }
+        public int Id { get; set; }
+        public int DSId { get; set; }       
+        public string Reason { get; set; }
+        public int StatusId { get; set; }
+
+        public float LoginLatitude { get; set; }
+
+        public float LoginLongitude { get; set; }
+        public float LogoutLatitude { get; set; }
+
+        public float LogoutLongitude { get; set; }
+        public int loginlogout { get; set; }
+        public string Mobileno { get; set; }
+    }
+
+    public class DeliverystaffTrack
+    {
+        public string Mobilenumber { get; set; }
+        public float latitude { get; set; }
+        public float longitude { get; set; }        
+        public int StatusId { get; set; }
+    }
+
+    public class DeliverystaffRating
+    {
+        public string Mobilenumber { get; set; }
+        public decimal DStaffRating { get; set; }
+        public string DStaffComments { get; set; }
+        public int orderid { get; set; }
+    }
+
+    public class CustomerRating
+    {
+        public string Mobilenumber { get; set; }
+        public decimal Rating { get; set; }
+        public string Comments { get; set; }
+        public int orderid { get; set; }
+    }
+
+    public class Itemschecking
+    {
+        public int orderid { get; set; }
+        public int ItemId { get; set; }
+        public int Isavailable { get; set; }
+    }
+
 }
