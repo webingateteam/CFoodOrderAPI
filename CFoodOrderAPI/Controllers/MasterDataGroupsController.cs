@@ -29,7 +29,7 @@ namespace CFoodOrder.Controllers
                 cmd.Connection = con;
 
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[GetMasterDataGroups]";
+                cmd.CommandText = "GetMasterDataGroups";
 
                
 
@@ -59,7 +59,7 @@ namespace CFoodOrder.Controllers
             cmd.Connection = con;
 
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = "[dbo].[InsUpDelMasterDataGroups]";
+            cmd.CommandText = "InsUpDelMasterDataGroups";
 
             SqlParameter fa = new SqlParameter("@flag", SqlDbType.VarChar, 10);
             fa.Value = m.flag;

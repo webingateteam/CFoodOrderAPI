@@ -125,7 +125,7 @@ namespace CFoodOrder.Controllers
             cityid.Value = rm.CityId;
             cmd.Parameters.Add(cityid);
 
-            SqlParameter zipcode = new SqlParameter("@zipcode", SqlDbType.Int);
+            SqlParameter zipcode = new SqlParameter("@zipcode", SqlDbType.VarChar, 50);
             zipcode.Value = rm.ZipCode;
             cmd.Parameters.Add(zipcode);
 
