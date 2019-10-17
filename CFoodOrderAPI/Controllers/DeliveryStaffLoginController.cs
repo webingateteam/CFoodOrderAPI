@@ -223,5 +223,68 @@ namespace CFoodOrderAPI.Controllers
             }
             return dt;
         }
+
+
+        [HttpPost]
+        [Route("api/DeliveryStaffLogin/ValidateCredentials")]
+        public DataTable ValidateCredentials(dstafflogin b)
+        {
+            //LogTraceWriter traceWriter = new LogTraceWriter();
+            SqlConnection conn = new SqlConnection();
+            DataTable dt = new DataTable();
+            try
+            {
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "ValidateCredentials....");
+
+
+                StringBuilder str = new StringBuilder();
+                str.Append("@mobileNo" + b.Mobileno + ",");
+                str.Append("@Password" + b.Password + ",");
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "ValidateCredentials Input sent...." + str.ToString());
+
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "DStaffCredentials";
+                cmd.Connection = conn;
+
+                SqlParameter ss = new SqlParameter();
+                ss.ParameterName = "@Mobileno";
+                ss.SqlDbType = SqlDbType.VarChar;
+                ss.Value = b.Mobileno;
+                cmd.Parameters.Add(ss);
+                SqlParameter dd = new SqlParameter();
+                dd.ParameterName = "@Password";
+                dd.SqlDbType = SqlDbType.VarChar;
+                dd.Value = b.Password;
+                cmd.Parameters.Add(dd);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "ValidateCredentials successful....");
+            }
+            catch (Exception ex)
+            {
+               // traceWriter.Trace(Request, "0", TraceLevel.Error, "{0}", "ValidateCredentials...." + ex.Message.ToString());
+                //throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+                SqlConnection.ClearPool(conn);
+            }
+            return dt;
+        }
     }
 }
