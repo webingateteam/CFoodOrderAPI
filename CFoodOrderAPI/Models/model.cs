@@ -1359,6 +1359,7 @@ namespace CFoodOrder.Models
         public float LogoutLongitude { get; set; }
         public int loginlogout { get; set; }
         public string Mobileno { get; set; }
+        public string Password { get; set; }
     }
 
     public class DeliverystaffTrack
@@ -1376,6 +1377,8 @@ namespace CFoodOrder.Models
         public string DStaffComments { get; set; }
         public int orderid { get; set; }
     }
+
+    
 
     public class CustomerRating
     {

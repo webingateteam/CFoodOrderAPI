@@ -20,16 +20,27 @@ namespace CFoodOrder.Controllers
             DataTable dt = new DataTable();
 
             SqlConnection con = new SqlConnection();
-            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
+            try
+            {
 
-            cmd.CommandText = "GetDeliveryStaff";
-            cmd.CommandType = CommandType.StoredProcedure;
 
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(dt);
+                con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandText = "GetDeliveryStaff";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             return dt;
         }
         [HttpPost]
@@ -42,7 +53,9 @@ namespace CFoodOrder.Controllers
             con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
 
             SqlCommand cmd = new SqlCommand();
-            cmd.Connection = con;
+            try
+            {
+                cmd.Connection = con;
 
             cmd.CommandText = "InsUpdDelDeliveryStaff";
             cmd.CommandType = CommandType.StoredProcedure;
@@ -157,9 +170,27 @@ namespace CFoodOrder.Controllers
 
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
-
+        }
+            catch (Exception ex)
+            {
+                //traceWriter.Trace(Request, "0", TraceLevel.Error, "{0}", "DriverRatingToRide...." + ex.Message.ToString());               
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+                SqlConnection.ClearPool(con);
+            }
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/DeliveryStaff/ValidateMobileOTP")]
         public DataTable ValidateMobileOTP(dummy rc)
@@ -200,6 +231,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/DeliveryStaff/ValidateEmailOTP")]
         public DataTable ValidateEmailOTP(dummy rc)
@@ -240,6 +273,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpPost]
         [Route("api/DeliveryStaff/GoOnlineOffline")]
         public DataTable GoOnlineOffline(dummy rc)
@@ -280,6 +315,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/DeliveryStaff/DeliveryStaffDashboard")]
         public DataTable DeliveryStaffDashboard(dummy rc)
@@ -320,6 +357,8 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
+
         [HttpGet]
         [Route("api/DeliveryStaff/ApproveRejectDeliveryStaff")]
         public DataTable ApproveRejectDeliveryStaff(dummy rc)
@@ -360,6 +399,7 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
         [HttpGet]
         [Route("api/DeliveryStaff/TrackOrderDelivery")]
         public DataTable TrackOrderDelivery(dummy rc)
@@ -400,6 +440,7 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
         [HttpPost]
         [Route("api/DeliveryStaff/InsUpdDeliveryStaffDetails")]
         public DataTable InsUpdDeliveryStaffDetails(dummy rc)
@@ -440,6 +481,7 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
         [HttpPost]
         [Route("api/DeliveryStaff/InsUpdDeliveryStaffDocs")]
         public DataTable InsUpdDeliveryStaffDocs(dummy rc)
@@ -480,6 +522,7 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
         [HttpGet]
         [Route("api/DeliveryStaff/GetPendingOrders")]
         public DataTable GetPendingOrders(dummy rc)
@@ -520,6 +563,7 @@ namespace CFoodOrder.Controllers
 
             return dt;
         }
+
         [HttpGet]
         [Route("api/DeliveryStaff/GetDSOrderHistory")]
         public DataTable GetDSOrderHistory(dummy rc)
