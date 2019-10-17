@@ -130,6 +130,7 @@ namespace CFoodOrder.Controllers
                     cmd.Parameters.Add(new SqlParameter("@RestBranchId", SqlDbType.Int)).SqlValue = A[0].RestBranchId;
                     cmd.Parameters.Add(new SqlParameter("@totalQuantity", SqlDbType.Int)).SqlValue = A[0].totalQuantity;
                     cmd.Parameters.Add(new SqlParameter("@totalamount", SqlDbType.Decimal)).SqlValue = A[0].totalamount;
+                    cmd.Parameters.Add(new SqlParameter("@paymentid", SqlDbType.Int)).SqlValue = A[0].paymentid;
                     cmd.Parameters.Add(new SqlParameter("@flag", SqlDbType.VarChar)).SqlValue = A[0].flag;
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
