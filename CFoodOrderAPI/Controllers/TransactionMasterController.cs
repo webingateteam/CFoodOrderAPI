@@ -13,8 +13,8 @@ namespace CFoodOrderAPI.Controllers
     public class TransactionMasterController : ApiController
     {
         [HttpGet]
-
-        public DataTable getTransactionMaster()
+        [Route("api/TransactionMaster/GetCustomerTransactions")]
+        public DataTable GetCustomerTransactions(int customerid)
         {
             DataTable Tbl = new DataTable();
             //LogTraceWriter traceWriter = new LogTraceWriter();
@@ -24,15 +24,23 @@ namespace CFoodOrderAPI.Controllers
             SqlConnection conn = new SqlConnection();
             //connetionString="Data Source=ServerName;Initial Catalog=DatabaseName;User ID=UserName;Password=Password"
             conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetCustomerTransactions";
+                cmd.Connection = conn;
+                conn.Open();
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = "getTransactionMaster";
-            cmd.Connection = conn;
-            DataSet ds = new DataSet();
-            SqlDataAdapter db = new SqlDataAdapter(cmd);
-            db.Fill(ds);
-            Tbl = ds.Tables[0];
+                cmd.Parameters.Add(new SqlParameter("@customerid", SqlDbType.Int)).SqlValue = customerid;
+
+
+                SqlDataAdapter db = new SqlDataAdapter(cmd);
+                db.Fill(Tbl);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
             //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "getTroubleTicketingDetails Credentials completed.");
             // int found = 0;
             return Tbl;
