@@ -1395,4 +1395,11 @@ namespace CFoodOrder.Models
         public int Isavailable { get; set; }
     }
 
+    public class dstafforder
+    {
+        public int orderid { get; set; }
+        public int statusid { get; set; }
+        public int dstaffid { get; set; }
+    }
+
 }
