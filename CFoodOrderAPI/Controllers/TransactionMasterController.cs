@@ -39,7 +39,7 @@ namespace CFoodOrderAPI.Controllers
         }
 
         [HttpPost]
-
+        [Route("api/TransactionMaster/savepayments")]
         public DataTable saveTroubleTicketingDetails(TransactionMaster n)
         {
             DataTable Tbl = new DataTable();

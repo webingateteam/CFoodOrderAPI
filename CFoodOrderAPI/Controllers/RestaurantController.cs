@@ -13,6 +13,63 @@ namespace CFoodOrder.Controllers
 {
     public class RestaurantController : ApiController
     {
+
+      
+        [HttpGet]
+        [Route("api/Restaurant/GetRMenuItemsbyRestId")]
+        public DataTable GetRMenuItemsbyRestId(int RestaurantId)
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandText = "GetRMenuItemsbyRestId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@RestaurantId", SqlDbType.Int)).SqlValue = RestaurantId;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+        [HttpGet]
+        [Route("api/Restaurant/GetRestaurantMenuCategoriesByResId")]
+        public DataTable GetRestaurantMenuCategoriesByResId(int RestaurantId)
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandText = "GetRestaurantMenuCategoriesByResId";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@RestaurantId", SqlDbType.Int)).SqlValue = RestaurantId;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            return dt;
+        }
+
         [HttpPost]
         [Route("api/Restaurant/InsUpdDelRestaurantDetails")]
         public DataTable InsUpdDelRestaurantDetails(RestaurantDetails rd)
