@@ -132,6 +132,9 @@ namespace CFoodOrder.Controllers
                     cmd.Parameters.Add(new SqlParameter("@totalamount", SqlDbType.Decimal)).SqlValue = A[0].totalamount;
                     cmd.Parameters.Add(new SqlParameter("@paymentid", SqlDbType.Int)).SqlValue = A[0].paymentid;
                     cmd.Parameters.Add(new SqlParameter("@flag", SqlDbType.VarChar)).SqlValue = A[0].flag;
+                    cmd.Parameters.Add(new SqlParameter("@caddress", SqlDbType.VarChar,-1)).SqlValue = A[0].customeraddress;
+                    cmd.Parameters.Add(new SqlParameter("@clat", SqlDbType.Decimal)).SqlValue = A[0].customerlat;
+                    cmd.Parameters.Add(new SqlParameter("@clog", SqlDbType.Decimal)).SqlValue = A[0].customerlog;
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     da.Fill(dt);

@@ -92,6 +92,7 @@ namespace CFoodOrder.Controllers
                 da.Fill(dt);
 
 
+                if (ocr.flag == "I") { 
                 //send email otp\
                 #region email opt
                 
@@ -167,10 +168,88 @@ namespace CFoodOrder.Controllers
 
                 }
 
-                #endregion email otp
+                    #endregion email otp
+                }
 
-                // return dt;
+                // Mobile OTP Send
+                if (ocr.flag == "C")
+                {
+                    #region motp
 
+                    string email = dt.Rows[0]["Email"].ToString();
+                    string MOTP = dt.Rows[0]["Mobileotp"].ToString();
+
+
+                    if (MOTP != null)
+                    {
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            string emailserver = ConfigurationManager.AppSettings["emailserver"].ToString();
+
+                            string username = ConfigurationManager.AppSettings["username"].ToString();
+                            string pwd = ConfigurationManager.AppSettings["password"].ToString();
+                            string fromaddress = ConfigurationManager.AppSettings["fromaddress"].ToString();
+                            string port = ConfigurationManager.AppSettings["port"].ToString();
+
+                            SmtpClient SmtpServer = new SmtpClient(emailserver);
+
+                            mail.From = new MailAddress(fromaddress);
+                            mail.To.Add(email);
+                            mail.Subject = "User Mobile OTP";
+                            mail.IsBodyHtml = true;
+
+                            string verifcodeMail = @"<table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <h2>Your Mobile OTP</h2>
+                                                                                <table width=\""760\"" align=\""center\"">
+                                                                                    <tbody style='background-color:#f9a825;'>
+                                                                                        <tr>
+                                                                                            <td style=\""font-family:'Zurich BT',Arial,Helvetica,sans-serif;font-size:15px;text-align:left;line-height:normal;background-color:#f9a825;\"" >
+                <div style='padding:10px;border:#0000FF solid 2px;'>    <br /><br />
+
+                                                                       Your Mobile OTP is:<h3>" + MOTP + @" </h3>
+
+                                                                      
+                                                                                                <br/>
+                                                                                                <br/>             
+
+                                                                                                Warm regards,<br>
+                                                                                                CFood Customer Service Team<br/><br />
+                </div>
+                                                                                            </td>
+                                                                                        </tr>
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    </table>";
+
+
+                            mail.Body = verifcodeMail;
+                            //SmtpServer.Port = 465;
+                            //SmtpServer.Port = 587;
+                            SmtpServer.Port = Convert.ToInt32(port);
+                            SmtpServer.UseDefaultCredentials = false;
+
+                            SmtpServer.Credentials = new NetworkCredential(username, pwd);
+                            SmtpServer.EnableSsl = true;
+                            //SmtpServer.TargetName = "STARTTLS/smtp.gmail.com";
+                            SmtpServer.Send(mail);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
+                        }
+
+                    }
+
+                    #endregion motp
+                }
             }
             catch (Exception ex)
             {
@@ -215,6 +294,10 @@ namespace CFoodOrder.Controllers
                 e.Value = ocr.EVerificationCode;
                 cmd.Parameters.Add(e);
 
+                SqlParameter f = new SqlParameter("@flag", SqlDbType.VarChar);
+                f.Value = ocr.flag;
+                cmd.Parameters.Add(f);
+                
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tbl);
 

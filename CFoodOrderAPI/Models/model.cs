@@ -27,10 +27,13 @@ namespace CFoodOrder.Models
             public int totalQuantity { get; set; }
             public int ItemId { get; set; }
             public int Quantity { get; set; }
-              public int paymentid { get; set; }
-        public Decimal totalamount { get; set; }
+             public int paymentid { get; set; }
+            public Decimal totalamount { get; set; }
             public Decimal ItemPrice { get; set; }
-            List<OrderItemslist> orderItemslist { get; set; }
+            public Decimal customerlat { get; set; }
+            public Decimal customerlog { get; set; }
+            public string customeraddress { get; set; }
+        List<OrderItemslist> orderItemslist { get; set; }
 
      }
 
