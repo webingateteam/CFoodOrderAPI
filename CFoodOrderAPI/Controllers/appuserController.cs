@@ -67,6 +67,7 @@ namespace CFoodOrder.Controllers
                 cmd.CommandText = "InsUpdAppusers";
 
                 cmd.Connection = conn;
+                conn.Open();
 
                 SqlParameter f = new SqlParameter("@flag", SqlDbType.VarChar);
                 f.Value = ocr.flag;
@@ -92,34 +93,35 @@ namespace CFoodOrder.Controllers
                 da.Fill(dt);
 
 
-                if (ocr.flag == "I") { 
-                //send email otp\
-                #region email opt
-                
-                string eotp = dt.Rows[0]["Emailotp"].ToString();
-                string Mobilenumber = dt.Rows[0]["Mobilenumber"].ToString();
-
-
-                if (eotp != null)
+                if (ocr.flag == "I")
                 {
-                    try
+                    //send email otp\
+                    #region email opt
+
+                    string eotp = dt.Rows[0]["Emailotp"].ToString();
+                    string Mobilenumber = dt.Rows[0]["Mobilenumber"].ToString();
+
+
+                    if (eotp != null)
                     {
-                        MailMessage mail = new MailMessage();
-                        string emailserver = ConfigurationManager.AppSettings["emailserver"].ToString();
+                        try
+                        {
+                            MailMessage mail = new MailMessage();
+                            string emailserver = ConfigurationManager.AppSettings["emailserver"].ToString();
 
-                        string username = ConfigurationManager.AppSettings["username"].ToString();
-                        string pwd = ConfigurationManager.AppSettings["password"].ToString();
-                        string fromaddress = ConfigurationManager.AppSettings["fromaddress"].ToString();
-                        string port = ConfigurationManager.AppSettings["port"].ToString();
+                            string username = ConfigurationManager.AppSettings["username"].ToString();
+                            string pwd = ConfigurationManager.AppSettings["password"].ToString();
+                            string fromaddress = ConfigurationManager.AppSettings["fromaddress"].ToString();
+                            string port = ConfigurationManager.AppSettings["port"].ToString();
 
-                        SmtpClient SmtpServer = new SmtpClient(emailserver);
+                            SmtpClient SmtpServer = new SmtpClient(emailserver);
 
-                        mail.From = new MailAddress(fromaddress);
-                        mail.To.Add(ocr.Email);
-                        mail.Subject = "User registration - Email OTP";
-                        mail.IsBodyHtml = true;
+                            mail.From = new MailAddress(fromaddress);
+                            mail.To.Add(ocr.Email);
+                            mail.Subject = "User registration - Email OTP";
+                            mail.IsBodyHtml = true;
 
-                        string verifcodeMail = @"<table>
+                            string verifcodeMail = @"<table>
                                                                         <tr>
                                                                             <td>
                                                                                 <h2>Thank you for registering with CFood APP</h2>
@@ -149,24 +151,24 @@ namespace CFoodOrder.Controllers
                                                                     </table>";
 
 
-                        mail.Body = verifcodeMail;
-                        //SmtpServer.Port = 465;
-                        //SmtpServer.Port = 587;
-                        SmtpServer.Port = Convert.ToInt32(port);
-                        SmtpServer.UseDefaultCredentials = false;
+                            mail.Body = verifcodeMail;
+                            //SmtpServer.Port = 465;
+                            //SmtpServer.Port = 587;
+                            SmtpServer.Port = Convert.ToInt32(port);
+                            SmtpServer.UseDefaultCredentials = false;
 
-                        SmtpServer.Credentials = new NetworkCredential(username, pwd);
-                        SmtpServer.EnableSsl = true;
-                        //SmtpServer.TargetName = "STARTTLS/smtp.gmail.com";
-                        SmtpServer.Send(mail);
+                            SmtpServer.Credentials = new NetworkCredential(username, pwd);
+                            SmtpServer.EnableSsl = true;
+                            //SmtpServer.TargetName = "STARTTLS/smtp.gmail.com";
+                            SmtpServer.Send(mail);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            //throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
+                        }
 
                     }
-                    catch (Exception ex)
-                    {
-                        //throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message));
-                    }
-
-                }
 
                     #endregion email otp
                 }
@@ -262,6 +264,7 @@ namespace CFoodOrder.Controllers
                 dt.Rows.Add(dr);
 
             }
+          
 
             return dt;
         }

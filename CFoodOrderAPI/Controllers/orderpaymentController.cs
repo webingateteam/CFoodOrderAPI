@@ -14,6 +14,37 @@ namespace CFoodOrder.Controllers
     public class orderpaymentController : ApiController
     {
 
+        [HttpGet]
+        [Route("api/orderpayment/GetOrderTrackingcustomer")]
+        public DataTable GetOrderTrackingcustomer(string orderid)
+        {
+            DataTable dt = new DataTable();
+            SqlConnection con = new SqlConnection();
+            try
+            {
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "GetOrderTrackingcustomer";
+                con.Open();
+
+                cmd.Parameters.Add(new SqlParameter("@orderid", SqlDbType.VarChar, -1)).SqlValue = orderid;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            return dt;
+            }
+
         [HttpPost]
         [Route("api/orderpayment/OrderItemslist")]
         public DataTable OrderItemslist(List<MenuItems> A)
