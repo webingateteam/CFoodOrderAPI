@@ -177,7 +177,7 @@ namespace CFoodOrderAPI.Controllers
             {
 
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DriverRatingToRide....");
-                str.Append("Mobilenumber:" + vb.Mobilenumber + ",");
+                //str.Append("Mobilenumber:" + vb.Mobilenumber + ",");
                 str.Append("orderid:" + vb.orderid + ",");
 
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "Input sent...." + str.ToString());
@@ -189,10 +189,11 @@ namespace CFoodOrderAPI.Controllers
                 cmd.CommandText = "DeliveryStaffRating";
 
 
-                cmd.Parameters.Add("@Mobilenumber", SqlDbType.VarChar, 20).Value = vb.Mobilenumber;
+                //cmd.Parameters.Add("@Mobilenumber", SqlDbType.VarChar, 20).Value = vb.Mobilenumber;
                 cmd.Parameters.Add("@orderid", SqlDbType.Int).Value = vb.orderid;
                 cmd.Parameters.Add("@DStaffRating", SqlDbType.Decimal).Value = vb.DStaffRating;                
                 cmd.Parameters.Add("@DStaffComments", SqlDbType.VarChar, 500).Value = vb.DStaffComments;
+                cmd.Parameters.Add("@flag", SqlDbType.Int).Value = vb.flag;
 
                 cmd.Connection = conn;
 

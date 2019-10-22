@@ -1376,10 +1376,11 @@ namespace CFoodOrder.Models
 
     public class DeliverystaffRating
     {
-        public string Mobilenumber { get; set; }
+        //public string Mobilenumber { get; set; }
         public decimal DStaffRating { get; set; }
         public string DStaffComments { get; set; }
         public int orderid { get; set; }
+        public int flag { get; set; }
     }
 
     
