@@ -332,6 +332,18 @@ namespace CFoodOrderAPI.Controllers
                 dss.Value = b.dstaffid;
                 cmd.Parameters.Add(dss);
 
+                SqlParameter dla = new SqlParameter();
+                dla.ParameterName = "@dellat";
+                dla.SqlDbType = SqlDbType.Decimal;
+                dla.Value = b.dellat;
+                cmd.Parameters.Add(dla);
+
+                SqlParameter dln = new SqlParameter();
+                dln.ParameterName = "@dellong";
+                dln.SqlDbType = SqlDbType.Decimal;
+                dln.Value = b.dellong;
+                cmd.Parameters.Add(dln);
+
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
 

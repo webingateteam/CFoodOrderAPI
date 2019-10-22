@@ -1401,6 +1401,8 @@ namespace CFoodOrder.Models
         public int orderid { get; set; }
         public int statusid { get; set; }
         public int dstaffid { get; set; }
+        public float dellat { get; set; }
+        public float dellong { get; set; }
     }
 
 }
