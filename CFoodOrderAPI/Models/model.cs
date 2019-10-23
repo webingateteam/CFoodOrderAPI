@@ -1409,4 +1409,12 @@ namespace CFoodOrder.Models
         public float dellong { get; set; }
     }
 
+    public class deliverycomplete
+    {
+        public int orderid { get; set; }
+        public int statusid { get; set; }
+        public int dstaffid { get; set; }
+
+    }
+
 }
