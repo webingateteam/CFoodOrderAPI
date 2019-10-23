@@ -177,7 +177,7 @@ namespace CFoodOrderAPI.Controllers
             {
 
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DriverRatingToRide....");
-                str.Append("Mobilenumber:" + vb.Mobilenumber + ",");
+                //str.Append("Mobilenumber:" + vb.Mobilenumber + ",");
                 str.Append("orderid:" + vb.orderid + ",");
 
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "Input sent...." + str.ToString());
@@ -189,10 +189,11 @@ namespace CFoodOrderAPI.Controllers
                 cmd.CommandText = "DeliveryStaffRating";
 
 
-                cmd.Parameters.Add("@Mobilenumber", SqlDbType.VarChar, 20).Value = vb.Mobilenumber;
+                //cmd.Parameters.Add("@Mobilenumber", SqlDbType.VarChar, 20).Value = vb.Mobilenumber;
                 cmd.Parameters.Add("@orderid", SqlDbType.Int).Value = vb.orderid;
                 cmd.Parameters.Add("@DStaffRating", SqlDbType.Decimal).Value = vb.DStaffRating;                
                 cmd.Parameters.Add("@DStaffComments", SqlDbType.VarChar, 500).Value = vb.DStaffComments;
+                cmd.Parameters.Add("@flag", SqlDbType.Int).Value = vb.flag;
 
                 cmd.Connection = conn;
 
@@ -343,6 +344,76 @@ namespace CFoodOrderAPI.Controllers
                 //dln.SqlDbType = SqlDbType.Decimal;
                 //dln.Value = b.dellong;
                 //cmd.Parameters.Add(dln);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject successful....");
+            }
+            catch (Exception ex)
+            {
+                // traceWriter.Trace(Request, "0", TraceLevel.Error, "{0}", "DStaffAcceptReject...." + ex.Message.ToString());                
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+                SqlConnection.ClearPool(conn);
+            }
+            return dt;
+        }
+
+
+        [HttpPost]
+        [Route("api/DeliveryStaffLogin/DeliveryCompletion")]
+        public DataTable DeliveryCompletion(deliverycomplete b)
+        {
+            //LogTraceWriter traceWriter = new LogTraceWriter();
+            SqlConnection conn = new SqlConnection();
+            DataTable dt = new DataTable();
+            try
+            {
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject....");
+
+
+                //StringBuilder str = new StringBuilder();
+                //str.Append("@mobileNo" + b.Mobileno + ",");
+                //str.Append("@Password" + b.Password + ",");
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject Input sent...." + str.ToString());
+
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "InsUpdOrderStatus";
+                cmd.Connection = conn;
+
+                SqlParameter ss = new SqlParameter();
+                ss.ParameterName = "@orderid";
+                ss.SqlDbType = SqlDbType.Int;
+                ss.Value = b.orderid;
+                cmd.Parameters.Add(ss);
+
+                SqlParameter dd = new SqlParameter();
+                dd.ParameterName = "@status";
+                dd.SqlDbType = SqlDbType.Int;
+                dd.Value = b.statusid;
+                cmd.Parameters.Add(dd);
+
+                SqlParameter dss = new SqlParameter();
+                dss.ParameterName = "@dstaffid";
+                dss.SqlDbType = SqlDbType.Int;
+                dss.Value = b.dstaffid;
+                cmd.Parameters.Add(dss);
+               
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
