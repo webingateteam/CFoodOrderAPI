@@ -50,7 +50,7 @@ namespace CFoodOrderAPI.Controllers
 
         [HttpPost]
         [Route("api/Items/Itemschecking")]
-        public DataTable Itemschecking(Itemschecking vb)
+        public DataTable Itemschecking(IEnumerable<Itemschecking> vb)
         {
             DataTable dt = new DataTable();            
             //LogTraceWriter traceWriter = new LogTraceWriter();
@@ -59,9 +59,9 @@ namespace CFoodOrderAPI.Controllers
             try
             {                
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "CustomerRating....");
-                str.Append("@ItemId:" + vb.ItemId + ",");
-                str.Append("@orderid:" + vb.orderid + ",");
-                str.Append("@Isavailable:" + vb.Isavailable + ",");
+                //str.Append("@ItemId:" + vb.ItemId + ",");
+                //str.Append("@orderid:" + vb.orderid + ",");
+                //str.Append("@Isavailable:" + vb.Isavailable + ",");
 
                 //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "Input sent...." + str.ToString());
 
@@ -71,18 +71,22 @@ namespace CFoodOrderAPI.Controllers
 
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.CommandText = "InsupdDelItemsChecking";
+                conn.Open();
 
 
-                cmd.Parameters.Add("@ItemId", SqlDbType.Int).Value = vb.ItemId;
-                cmd.Parameters.Add("@orderid", SqlDbType.Int).Value = vb.orderid;
-                cmd.Parameters.Add("@Isavailable", SqlDbType.Int).Value = vb.Isavailable;                
+                foreach (Itemschecking v in vb)
+                {
 
-                cmd.Connection = conn;
+                    cmd.Parameters.Add("@ItemId", SqlDbType.Int).Value = v.ItemId;
+                    cmd.Parameters.Add("@orderid", SqlDbType.Int).Value = v.orderid;
+                    cmd.Parameters.Add("@Isavailable", SqlDbType.Int).Value = v.Isavailable;
 
-                SqlDataAdapter db = new SqlDataAdapter(cmd);
-                db.Fill(dt);                
+                    cmd.ExecuteScalar();
 
-                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "CustomerRating successful....");
+                    cmd.Parameters.Clear();
+                }
+
+                conn.Close();
 
             }
             catch (Exception ex)
