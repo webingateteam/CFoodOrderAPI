@@ -109,5 +109,40 @@ namespace CFoodOrderAPI.Controllers
             }
             return dt;
         }
+
+
+        [HttpPost]
+        [Route("api/Items/UpdateOrderAmount")]
+        public DataTable UpdateOrderAmount(order m)
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+
+                cmd.CommandText = "UpdateOrderAmount";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add(new SqlParameter("@orderid", SqlDbType.Int)).SqlValue = m.orderid;
+                cmd.Parameters.Add(new SqlParameter("@amount", SqlDbType.Decimal)).SqlValue = m.amount;
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
     }
 }

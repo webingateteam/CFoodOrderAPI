@@ -438,5 +438,67 @@ namespace CFoodOrderAPI.Controllers
             }
             return dt;
         }
+
+
+        [HttpPost]
+        [Route("api/DeliveryStaffLogin/UpdateDSLocation")]
+        public DataTable UpdateDSLocation(DeliverystaffTrack l)
+        {
+            //LogTraceWriter traceWriter = new LogTraceWriter();
+            SqlConnection conn = new SqlConnection();
+            DataTable dt = new DataTable();
+            try
+            {
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject....");
+
+
+                //StringBuilder str = new StringBuilder();
+                //str.Append("@mobileNo" + b.Mobileno + ",");
+                //str.Append("@Password" + b.Password + ",");
+
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject Input sent...." + str.ToString());
+
+                conn.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["btposdb"].ToString();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "UpdateDStaffLocation";
+                cmd.Connection = conn;
+
+                SqlParameter MobileNumber = new SqlParameter("@Mobilenumber", SqlDbType.VarChar, 50);
+                MobileNumber.Value = l.Mobilenumber;
+                cmd.Parameters.Add(MobileNumber);
+
+                SqlParameter Lat = new SqlParameter("@Latitude", SqlDbType.Decimal);
+                Lat.Value = l.latitude;
+                cmd.Parameters.Add(Lat);
+
+                SqlParameter Lng = new SqlParameter("@Longitude", SqlDbType.Decimal);
+                Lng.Value = l.longitude;
+                cmd.Parameters.Add(Lng);
+
+                SqlDataAdapter db = new SqlDataAdapter(cmd);
+                db.Fill(dt);
+                //traceWriter.Trace(Request, "0", TraceLevel.Info, "{0}", "DStaffAcceptReject successful....");
+            }
+            catch (Exception ex)
+            {
+                // traceWriter.Trace(Request, "0", TraceLevel.Error, "{0}", "DStaffAcceptReject...." + ex.Message.ToString());                
+                dt.Columns.Add("Code");
+                dt.Columns.Add("description");
+                DataRow dr = dt.NewRow();
+                dr[0] = "ERR001";
+                dr[1] = ex.Message;
+                dt.Rows.Add(dr);
+            }
+            finally
+            {
+                conn.Close();
+                conn.Dispose();
+                SqlConnection.ClearPool(conn);
+            }
+            return dt;
+        }
     }
 }

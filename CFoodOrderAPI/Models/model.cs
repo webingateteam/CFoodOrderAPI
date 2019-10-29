@@ -1417,4 +1417,13 @@ namespace CFoodOrder.Models
 
     }
 
+    public class order
+    {
+        public decimal amount { get; set; }
+        public int orderid { get; set; }
+
+    }
+
+    
+
 }
